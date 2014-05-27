@@ -1,4 +1,5 @@
-=== Fluorine
+Fluorine
+========
 
 Fluorine - Flow based programing abstraction.
 
@@ -32,7 +33,8 @@ the program is called a flow and each node is called a step.
 
 Let us Orchestrate asynchronous and synchronous code!
 
-=== Usage
+Usage
+=====
 
 Basically you instantiate a flow.
 Then you add a step to the flow.
@@ -41,7 +43,8 @@ Any step can have other steps as dependancies.
 When the program runs, it will run each step only if all of its
 dependancies have been met.
 
-=== Dependencies/Requirements
+Dependencies/Requirements
+=========================
 
 Require the libraries needed for Fluorine
 1. [Neon](https://github.com/azendal/neon)
@@ -50,7 +53,8 @@ Neon stdlib)
 3. [NodeSupport](https://github.com/azendal/neon) (part of the
 Neon stdlib)
 
-=== Geting Started
+Geting Started
+==============
 
 Suppose you need to execute two asynchronous functions (someAsyncFn,
 anotherAsyncFn) and when both are resolved execute something with the
@@ -78,6 +82,9 @@ flow.step('foo').dependsOn('bar', 'baz')(function (step) {
     step.success();
 });
 ```
+
+Examples
+========
 
 No more coupling async methods with unecessary nesting, let suppose
 you have fn1, fn2, fn3 and fn4 which are function that are asynchronous,
@@ -145,9 +152,7 @@ f.step('4').dependsOn('1', '2', '3')(function (step) {
 });
 ```
 
-
 Execute fn1 and fn2 then when both are ready execute fn3 and then fn4
-
 ```javascript
 var f = new Flow();
 
