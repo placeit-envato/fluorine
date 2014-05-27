@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Fluorine : flow based programing abstraction" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Fluorine</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/freshout-dev/fluorine">View on GitHub</a>
+
+          <h1 id="project_title">Fluorine</h1>
+          <h2 id="project_tagline">flow based programing abstraction</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/freshout-dev/fluorine/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/freshout-dev/fluorine/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="fluorine" class="anchor" href="#fluorine"><span class="octicon octicon-link"></span></a>Fluorine</h1>
+
+<p>Fluorine - Flow based programing abstraction.</p>
+
+<p>Fluorine can simply be though of as an abstraction or a DSL.
+It is a structure of code in which you can manage complex asynchronous
+code with ease.</p>
+
+<p>Probably one of the most important features of Fluorine is its
+non-intrusive philosophy, since it separates code from structure.</p>
+
+<p>This "structure" is though of as a flow within a graph, where each node
+in the graph is a function that runs some synchronous or asynchronous
+code.</p>
+
+<p>Now, even though this sounds very simple, it is quite powerful, because
+you can code the "flow" which is the order in which functions will run,
+and then go ahead and code the behavior that will run within each node
+separately.</p>
+
+<p>This simple fact, allows for clean, maintainable, simpler and atomic code.
+Removing callback-hells, nesting, smells, complexity.</p>
+
+<p>You may not realize until you get there, but refactoring a flow consists
+of re-arranging the order of the nodes, while on the other hand you'll
+probaly produce a lot of bugs while trying to refactor all the mixed,
+nested complexity that lies in front of you. That is.. if you return
+alive from mordor.</p>
+
+<p>Now, within the Fluorine world, the program is a graph, the execution of
+the program is called a flow and each node is called a step.</p>
+
+<p>Let us Orchestrate asynchronous and synchronous code!</p>
+
+<h1>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h1>
+
+<p>Basically you instantiate a flow.
+Then you add a step to the flow.
+Any step can have other steps as dependancies.</p>
+
+<p>When the program runs, it will run each step only if all of its
+dependancies have been met.</p>
+
+<h1>
+<a name="dependenciesrequirements" class="anchor" href="#dependenciesrequirements"><span class="octicon octicon-link"></span></a>Dependencies/Requirements</h1>
+
+<p>Require the libraries needed for Fluorine
+1. <a href="https://github.com/azendal/neon">Neon</a>
+2. <a href="https://github.com/azendal/neon">CustomEventSupport</a> (part of the
+Neon stdlib)
+3. <a href="https://github.com/azendal/neon">NodeSupport</a> (part of the
+Neon stdlib)</p>
+
+<h1>
+<a name="geting-started" class="anchor" href="#geting-started"><span class="octicon octicon-link"></span></a>Geting Started</h1>
+
+<p>Suppose you need to execute two asynchronous functions (someAsyncFn,
+anotherAsyncFn) and when both are resolved execute something with the
+response of the previous asynchronous functions.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">flow</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Flow</span><span class="p">();</span>
+
+<span class="nx">flow</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="s1">'bar'</span><span class="p">)(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">someAsyncFn</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">someData</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">step</span><span class="p">.</span><span class="nx">success</span><span class="p">(</span><span class="nx">someData</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+
+<span class="nx">flow</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="s1">'baz'</span><span class="p">)(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">anotherAsyncFn</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">moreData</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">step</span><span class="p">.</span><span class="nx">success</span><span class="p">(</span><span class="nx">moreData</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+
+<span class="nx">flow</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="s1">'foo'</span><span class="p">).</span><span class="nx">dependsOn</span><span class="p">(</span><span class="s1">'bar'</span><span class="p">,</span> <span class="s1">'baz'</span><span class="p">)(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// step.data.bar has someData as passed by the bar step</span>
+    <span class="c1">// step.data.baz has moreData as passed by the baz step</span>
+    <span class="c1">// Execute something else and then finish</span>
+    <span class="nx">step</span><span class="p">.</span><span class="nx">success</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div>
+
+<h1>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h1>
+
+<p>No more coupling async methods with unecessary nesting, let suppose
+you have fn1, fn2, fn3 and fn4 which are function that are asynchronous,
+and you want to call them in sequence after each other</p>
+
+<p>Using nested callbacks</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">fn1</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// execute some code</span>
+    <span class="nx">fn2</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// more code</span>
+        <span class="nx">fn3</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="c1">// ...</span>
+            <span class="nx">fn4</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+                <span class="c1">// finalize</span>
+            <span class="p">});</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>Using Fluorine</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Flow</span><span class="p">();</span>
+
+<span class="nx">f</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="s1">'1'</span><span class="p">)(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// execute some code</span>
+    <span class="nx">fn1</span><span class="p">(</span><span class="nx">step</span><span class="p">.</span><span class="nx">success</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">f</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="s1">'2'</span><span class="p">).</span><span class="nx">dependsOn</span><span class="p">(</span><span class="s1">'1'</span><span class="p">)(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// more code</span>
+    <span class="nx">fn2</span><span class="p">(</span><span class="nx">step</span><span class="p">.</span><span class="nx">success</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">flow</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="s1">'3'</span><span class="p">).</span><span class="nx">dependsOn</span><span class="p">(</span><span class="s1">'2'</span><span class="p">)(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+    <span class="nx">fn3</span><span class="p">(</span><span class="nx">step</span><span class="p">.</span><span class="nx">success</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">flow</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="s1">'4'</span><span class="p">).</span><span class="nx">dependsOn</span><span class="p">(</span><span class="s1">'3'</span><span class="p">)(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// finalize</span>
+    <span class="nx">fn4</span><span class="p">(</span><span class="nx">step</span><span class="p">.</span><span class="nx">success</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>Let run fn1, fn2 and fn3 and only execute fn4 after the previous funcitons finish</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Flow</span><span class="p">();</span>
+
+<span class="nx">f</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="s1">'1'</span><span class="p">)(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">fn1</span><span class="p">(</span><span class="nx">step</span><span class="p">.</span><span class="nx">success</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">f</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="s1">'2'</span><span class="p">)(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">fn2</span><span class="p">(</span><span class="nx">step</span><span class="p">.</span><span class="nx">success</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">f</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="s1">'3'</span><span class="p">)(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">fn3</span><span class="p">(</span><span class="nx">step</span><span class="p">.</span><span class="nx">success</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">f</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="s1">'4'</span><span class="p">).</span><span class="nx">dependsOn</span><span class="p">(</span><span class="s1">'1'</span><span class="p">,</span> <span class="s1">'2'</span><span class="p">,</span> <span class="s1">'3'</span><span class="p">)(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">fn4</span><span class="p">(</span><span class="nx">step</span><span class="p">.</span><span class="nx">success</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>Execute fn1 and fn2 then when both are ready execute fn3 and then fn4</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Flow</span><span class="p">();</span>
+
+<span class="nx">f</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="s1">'1'</span><span class="p">)(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">fn1</span><span class="p">(</span><span class="nx">step</span><span class="p">.</span><span class="nx">success</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">f</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="s1">'2'</span><span class="p">)(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">fn2</span><span class="p">(</span><span class="nx">step</span><span class="p">.</span><span class="nx">success</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">f</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="s1">'3'</span><span class="p">).</span><span class="nx">dependsOn</span><span class="p">(</span><span class="s1">'1'</span><span class="p">,</span> <span class="s1">'2'</span><span class="p">)(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">fn3</span><span class="p">(</span><span class="nx">step</span><span class="p">.</span><span class="nx">success</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">f</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="s1">'4'</span><span class="p">).</span><span class="nx">dependsOn</span><span class="p">(</span><span class="s1">'3'</span><span class="p">)(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">step</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">fn4</span><span class="p">(</span><span class="nx">step</span><span class="p">.</span><span class="nx">success</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Fluorine maintained by <a href="https://github.com/freshout-dev">freshout-dev</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
