@@ -240,12 +240,12 @@ Class('FlowNode').includes(NodeSupport)({
         run : function (nodeLikeObject) {
             var node = this;
             if (nodeLikeObject.hasOwnProperty('data') === true) {
-                window.setTimeout(function runFlowNode() {
+                setTimeout(function runFlowNode() {
                     node.code(nodeLikeObject);
                 }, 0);
             }
             else if (typeof this.errorCode !== 'undefined') {
-                window.setTimeout(function runFlowNodeError() {
+                setTimeout(function runFlowNodeError() {
                     node.errorCode(nodeLikeObject);
                 }, 0);
             }
