@@ -108,7 +108,7 @@ fn1(function () {
 
 Using Fluorine
 ```javascript
-var f = new Flow();
+var f = new Flow({name: 'testFlow'});
 
 f.step('1')(function (step) {
     // execute some code
@@ -133,7 +133,7 @@ flow.step('4').dependsOn('3')(function (step) {
 
 Let run fn1, fn2 and fn3 and only execute fn4 after the previous funcitons finish
 ```javascript
-var f = new Flow();
+var f = new Flow({name:'dependentFlow'});
 
 f.step('1')(function (step) {
     fn1(step.success);
@@ -154,7 +154,7 @@ f.step('4').dependsOn('1', '2', '3')(function (step) {
 
 Execute fn1 and fn2 then when both are ready execute fn3 and then fn4
 ```javascript
-var f = new Flow();
+var f = new Flow({name: 'lastFlow'});
 
 f.step('1')(function (step) {
     fn1(step.success);
