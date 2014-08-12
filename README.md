@@ -61,7 +61,7 @@ anotherAsyncFn) and when both are resolved execute something with the
 response of the previous asynchronous functions.
 
 ```javascript
-var flow = new Flow();
+var flow = new Flow({name: 'test'});
 
 flow.step('bar')(function (step) {
     someAsyncFn(function (someData) {
