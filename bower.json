@@ -1,0 +1,31 @@
+{
+  "name": "fluorine",
+  "main": "fluorine.js",
+  "version": "1.0.0",
+  "homepage": "https://github.com/freshout-dev/fluorine",
+  "authors": [
+    "Fernando Trasviña <trasvina@gmail.com>"
+  ],
+  "description": "Flow based programing abstraction",
+  "keywords": [
+    "flow control",
+    "dsl",
+    "async",
+    "promise",
+    "promises"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "LICENSE",
+    "README.md",
+    "package.json",
+    "bower.json"
+  ],
+  "dependencies": {
+    "neon": "*"
+  }
+}
