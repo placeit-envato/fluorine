@@ -38,10 +38,10 @@ Usage
 
 Basically you instantiate a flow.
 Then you add a step to the flow.
-Any step can have other steps as dependancies.
+Any step can have other steps as dependencies.
 
 When the program runs, it will run each step only if all of its
-dependancies have been met.
+dependencies have been met.
 
 Dependencies/Requirements
 =========================
@@ -107,6 +107,7 @@ fn1(function () {
 ```
 
 Using Fluorine
+
 ```javascript
 var f = new Flow({name: 'testFlow'});
 
@@ -170,5 +171,34 @@ f.step('3').dependsOn('1', '2')(function (step) {
 
 f.step('4').dependsOn('3')(function (step) {
     fn4(step.success);
+});
+```
+
+Error handling
+--------------
+
+If you want to handle errors in the execution of one of your nodes, you can
+pass an additional function parameter to the step execution, that will be
+called in case of error.
+
+To trigger an error, you must explicitely call `step.fail(error)` for other
+nodes to be notified
+
+```javascript
+var f = new Flow({ name : 'flow' })
+
+f.step('foo')(function(step) {
+    step.success();
+});
+
+f.step('bar')(function(step) {
+    errorData = { error : 'some' };
+    step.fail(errorData);
+});
+
+f.step('baz').dependsOn('foo', 'bar')(function(step) {
+    // This won't be executed
+}, function(step) {
+    console.log("Error: ", step.errors.bar);
 });
 ```
