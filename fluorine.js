@@ -113,7 +113,7 @@ Class('Flow').includes(CustomEventSupport, NodeSupport)({
                 else {
                     nodeLikeObject.errors = {};
                     fulfilledDependencies.forEach(function (dependencyName) {
-                        nodeLikeObject.data[dependencyName] = this[dependencyName].error;
+                        nodeLikeObject.errors[dependencyName] = this[dependencyName].error;
                     }, this);
                 }
 
