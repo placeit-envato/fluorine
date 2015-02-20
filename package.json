@@ -1,8 +1,8 @@
 {
-  "author": "Mohamed Alaa",
+  "author": "Fernando Trasvina",
   "name": "fluorine",
   "description": "Fluorine node Package to run js flows better than promises",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "repository": {
     "type" : "git",
     "url": "https://github.com/freshout-dev/fluorine"
