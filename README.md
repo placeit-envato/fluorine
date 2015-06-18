@@ -1,5 +1,7 @@
 Fluorine
 ========
+[![npm-image](https://img.shields.io/npm/v/fluorine.svg?style=flat-square)](https://www.npmjs.com/package/fluorine)
+![bower-image](https://img.shields.io/bower/v/fluorine.svg?style=flat-square)
 
 Fluorine - Flow based programing abstraction.
 
