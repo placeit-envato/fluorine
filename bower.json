@@ -1,7 +1,7 @@
 {
   "name": "fluorine",
   "main": "fluorine.js",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "homepage": "https://github.com/freshout-dev/fluorine",
   "authors": [
     "Fernando Trasviña <trasvina@gmail.com>"
