@@ -269,6 +269,9 @@ Class('FlowNode').includes(NodeSupport)({
             this.error = error;
             this.isRejected = true;
             this.parent.dispatch(this.name);
+            this.parent.dispatch('reject', {
+                data : { node : this, error: error }
+            });
         },
 
         /**
