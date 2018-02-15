@@ -258,6 +258,11 @@ Class('FlowNode').includes(NodeSupport)({
         fulfill : function (data) {
             this.data = data;
             this.isFulfilled = true;
+
+            if (this.parent === null) {
+                return;
+            }
+
             this.parent.dispatch(this.name);
         },
 
@@ -268,6 +273,11 @@ Class('FlowNode').includes(NodeSupport)({
         reject : function (error) {
             this.error = error;
             this.isRejected = true;
+
+            if (this.parent === null) {
+                return;
+            }
+
             this.parent.dispatch(this.name);
             this.parent.dispatch('reject', {
                 data : { node : this, error: error }
