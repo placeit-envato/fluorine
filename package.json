@@ -9,10 +9,10 @@
   },
   "main"        : "./fluorine",
   "dependencies": {
-    "neon": "~2.0.0"
+    "neon": "~2.32.0"
   },
   "devDependencies": {
-    "neon": "~2.0.0"
+    "neon": "~2.32.0"
   },
   "engines": {
     "node": "*"
